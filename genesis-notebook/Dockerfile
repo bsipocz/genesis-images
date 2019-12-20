@@ -1,4 +1,4 @@
-FROM jupyter/datascience-notebook:1386e2046833
+FROM jupyter/scipy-notebook:7a0c7325e470
 
 #######################################################
 # Packages installed as root
@@ -9,10 +9,6 @@ USER root
 RUN sudo apt-get update && sudo apt-get install --yes telnet inetutils-ping
 RUN sudo apt-get update && sudo apt-get install --yes openssh-client
 RUN sudo apt-get update && sudo apt-get install --yes vim joe emacs-nox
-
-# Alert Streaming
-RUN curl -L http://research.majuric.org/other/kt -o /usr/local/bin/kt && chmod +x /usr/local/bin/kt
-RUN curl -L http://research.majuric.org/other/kafkacat -o /usr/local/bin/kafkacat && chmod +x /usr/local/bin/kt
 
 #######################################################
 # Packages installed as joyvan (who owns conda)
@@ -27,11 +23,8 @@ RUN conda install -c defaults -c conda-forge nbgitpuller
 RUN conda install -c defaults -c conda-forge munch tqdm pv
 RUN conda install -c defaults -c conda-forge astropy aplpy astroml
 
-# Alert Streaming
-RUN conda install -c defaults -c conda-forge python-confluent-kafka fastavro python-avro
-
-# Solar system
-RUN conda install -c defaults -c conda-forge openorb
+# Install astroML workshop dependencies
+RUN conda install -c defaults -c conda-forge pymc3 tensorflow-gpu
 
 # Hide system kernels from nb_conda_kernels
 # Place user-defined conda environments into the user's directory
